@@ -1,8 +1,7 @@
-package com.berthaudiere.berthau.web;
+package com.berthaudiere.berthau;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.NoSuchElementException;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
@@ -11,14 +10,18 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.berthaudiere.berthau.service.exception.ActivitySheetNotFoundException;
+
 @RestControllerAdvice // globalement les erreurs et à appliquer des logiques transversales dans une
                       // application Spring Boot REST.
 public class ActivitySheetErrorHandler {
 
-    @ExceptionHandler(NoSuchElementException.class) // exeption qui gere si un element est pas trouvé
+    @ExceptionHandler(ActivitySheetNotFoundException.class) // exeption qui gere si un element est pas trouvé
     @ResponseStatus(HttpStatus.NOT_FOUND) // reponse 404 quand quelque chose n'est pas trouvé
 
-    public void handleNoElementException() {
+    public Error handleActivitySheetNotFoundException(ActivitySheetNotFoundException ex) {
+            return new Error(ex.getMessage());
+
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
